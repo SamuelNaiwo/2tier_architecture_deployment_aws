@@ -4,7 +4,7 @@
 
 2. Name your instance to help you remember what the instance is for.
 
-    ![Alt text](local2ec2/20.%20Launch%20Instance.png)
+    ![Alt text](img/local2ec2/20.%20Launch%20Instance.png)
 
 3. Select your instance type and key pair. If you don't have a key pair, you can create a new one.
 
@@ -45,7 +45,8 @@
 15. Run the command below to secure copy your app folder onto your instance.
 
     ```
-    scp -i "tech221.pem" -r /Users/samuelnaiwo/Documents/tech221/virtualisation/app ubuntu@ec2-34-251-148-61.eu-west-1.compute.amazonaws.com:/home/ubuntu/
+    scp -i "tech221.pem" -r /Users/samuelnaiwo/Documents/tech221/virtualisation/app ubuntu@ec2-34-255-121-128.eu-west-1.compute.amazonaws.com:/home/ubuntu/
+
     ```
 
 16. Go back to your ubuntu terminal and install NodeJs.
@@ -62,7 +63,7 @@
 
 ## Reverse Proxy
 
-1. Open your ubuntu terminal window.1
+1. Open your ubuntu terminal window.
 
 2. Use the command `cd /etc/nginx/sites-available` in order to navigate inside the nginx configuration folder.
 
@@ -102,3 +103,75 @@ server {
 11. Paste your ip, without port number, into browser and check if it works:
 
     ![Alt text](img/sparta_app.png)
+
+## DB Instance
+
+1. Create a new instance for Mongo DB.
+
+2. Create a new security group for this instance allowing MY IP on port 22, Custom TCP on port 27017 and Custom TCP on port 3000.
+
+3. Launch your new instance.
+
+4. Open new terminal and ssh into .ssh folder.
+
+5. Copy your ssh key on AWS and paste into terminal.
+
+6. Follow these commands to install Mongo DB
+
+    ```
+    sudo apt update -y
+
+    sudo apt upgrade -y
+
+    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv D68FA50FEA312927
+
+    echo "deb https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
+
+    sudo apt update -y
+
+    sudo apt upgrade -y
+
+    sudo apt-get install -y mongodb-org=3.2.20 mongodb-org-server=3.2.20 mongodb-org-shell=3.2.20 mongodb-org-mongos=3.2.20 mongodb-org-tools=3.2.20
+
+    sudo systemctl start mongod
+
+    sudo systemctl status mongod
+    ```
+
+5. Change directory into etc folder for MongoDB
+
+```
+cd /etc/
+```
+
+6. Open the mongod configuration file with: `sudo nano /etc/mongod.conf`
+
+7. Scroll down, change bindip to 0.0.0.0
+
+8. Save file by pressing ctrl+x to exit, then y to save changes, and then enter to confirm.
+
+9. Restart MongoDB `sudo systemctl restart mongod`
+
+10. Enable MongoDB `sudo systemctl enable mongod`
+
+11. Check to see if MongoDB is active and running `sudo systemctl status mongod`
+
+12. Open app instace and cd into home folder.
+
+13. Open your mongod.conf file with `sudo nano mongod.conf`
+
+14. Scroll down to the bottom of the file and enter your new environment variable.
+
+```
+export DB_HOST=mongodb://<pubic IP>:27017/posts
+```
+
+15. Referesh your .bashrc folder `source .bashrc`
+
+16. Change directory into app folder.
+
+17. Seed the data to database with `node seeds/seed.js`
+
+18. Run the app `node app.js`
+
+    ![Alt text](img/app%20running%20with%20DB.png)
