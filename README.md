@@ -38,6 +38,8 @@
 
 13. Run the command `sudo apt install nginx -y` to install nginx.
 
+14. Run the command `sudo systemctl status nginx` to make sure nginx is active and running.
+
 14. Open another terminal and change directory into `.ssh` folder where your pem file is stored.
 
 15. Run the command below to secure copy your app folder onto your instance.
