@@ -10,7 +10,7 @@
 
     ![Alt text](local2ec2/23.%20Instance%20type%20amd%20key%20pair.png)
 
-4. Under network settings, select an existing security group. If you don't have one, you can create a security group.
+4. Under network settings, select an existing security group. If you don't have one, you can create a security group. Make sure port 3000 is open and type should be Custom TCP.
 
     ![Alt text](local2ec2/24.%20Security%20group.png)
 
@@ -47,3 +47,58 @@
     ```
     scp -i "tech221.pem" -r /Users/samuelnaiwo/Documents/tech221/virtualisation/app ubuntu@ec2-34-251-148-61.eu-west-1.compute.amazonaws.com:/home/ubuntu/
     ```
+
+16. Go back to your ubuntu terminal and install NodeJs.
+
+    ```
+    sudo apt-get install python-software-properties
+    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+    sudo apt-get install nodejs -y
+    ```
+
+17.  Next, install pm2 with the command `sudo npm install pm2 -g`
+
+18. Run the command `node app.js` to run the app.
+
+## Reverse Proxy
+
+1. Open your ubuntu terminal window.1
+
+2. Use the command `cd /etc/nginx/sites-available` in order to navigate inside the nginx configuration folder.
+
+3. Create a new configuration file using the following command: `sudo nano nodeapp.conf`.
+
+4. Inside the file type the following code:
+
+```
+server {
+   listen 80;
+   server_name 192.168.10.100;
+
+   location / {
+       proxy_pass http://192.168.10.100:3000;
+       proxy_set_header Host $host;
+       proxy_set_header X-Real-IP $remote_addr;
+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+       proxy_set_header X-Forwarded-Proto $scheme;
+   }
+}
+```
+
+`server_name ***`  - can be the name of your server or your ip address.
+
+5. Use ctrl+x to exit nano, then press y to save the changes, and then press enter to save the name of the file.
+
+6. Enable the configuration by creating a symbolic link to enable a new config file: `sudo ln -s /etc/nginx/sites-available/nodeapp.conf /etc/nginx/sites-enabled/nodeapp.conf`.
+
+7. Check configuration for errors: `sudo nginx -t`.
+
+8. Now reload nginx for the new configuration to take place. `sudo systemctl reload nginx`.
+
+9. Go back to your home folder by using `cd` command and then navigate in to `cd app`.
+
+10. Launch app by using the command: `node app.js` 
+
+11. Paste your ip, without port number, into browser and check if it works:
+
+    ![Alt text](img/sparta_app.png)
