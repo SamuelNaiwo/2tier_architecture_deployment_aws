@@ -1,5 +1,7 @@
 # Local Files To EC2 & Deploy App
 
+## App Instance
+
 1. Launch a new instance. If you have an AMI set up already, then launch it through that.
 
 2. Name your instance to help you remember what the instance is for.
@@ -152,22 +154,24 @@ server {
 
 11. Check to see if MongoDB is active and running `sudo systemctl status mongod`
 
-12. Open app instace and cd into home folder.
+## Connect App and DB Instance
 
-13. Open your .bashrc folder with `sudo nano .bashrc`
+1. Open app instace and cd into home folder.
 
-14. Scroll down to the bottom of the file and enter your new environment variable.
+2. Open your .bashrc folder with `sudo nano .bashrc`
+
+3. Scroll down to the bottom of the file and enter your new environment variable.
 
 ```
 export DB_HOST=mongodb://<pubic IP>:27017/posts
 ```
 
-15. Referesh your .bashrc folder `source .bashrc`
+4. Referesh your .bashrc folder `source .bashrc`
 
-16. Change directory into app folder.
+5. Change directory into app folder.
 
-17. Seed the data to database with `node seeds/seed.js`
+6. Seed the data to database with `node seeds/seed.js`
 
-18. Run the app `node app.js`
+7. Run the app `node app.js`
 
     ![Alt text](img/app%20running%20with%20DB.png)
