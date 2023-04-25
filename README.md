@@ -138,15 +138,11 @@ server {
     sudo systemctl status mongod
     ```
 
-5. Change directory into etc folder for MongoDB
-
-```
-cd /etc/
-```
+5. Change directory into etc folder for MongoDB `cd /etc/`
 
 6. Open the mongod configuration file with: `sudo nano /etc/mongod.conf`
 
-7. Scroll down, change bindip to 0.0.0.0
+7. Scroll down, change bindip to `0.0.0.0`
 
 8. Save file by pressing ctrl+x to exit, then y to save changes, and then enter to confirm.
 
@@ -158,7 +154,7 @@ cd /etc/
 
 12. Open app instace and cd into home folder.
 
-13. Open your mongod.conf file with `sudo nano mongod.conf`
+13. Open your .bashrc folder with `sudo nano .bashrc`
 
 14. Scroll down to the bottom of the file and enter your new environment variable.
 
